@@ -1,15 +1,11 @@
 import praw
 import re
 
-
-
 # This script parses all the links from the eureddision thread and outputs into a txt file.
 # The links than can be used in playlist generators online.
 # Also planning to do a script that will post all submissions randomly.
 
 # Needs a file named credentials.txt with client_id client_secre
-
-
 
 
 file = open("credentials.txt", "r")
@@ -23,23 +19,23 @@ titles = []
 artist = []
 date = []
 
-#standard praw stuff
+# standard praw stuff
 
-reddit = praw.Reddit(client_id = creds[0].strip() ,
-                     client_secret = creds[1].strip() ,
-                     username = creds[2].strip() ,
-                     password = creds[3].strip() ,
-                     user_agent = 'Youtube Link Parser')
+reddit = praw.Reddit(client_id=creds[0].strip(),
+                     client_secret=creds[1].strip(),
+                     username=creds[2].strip(),
+                     password=creds[3].strip(),
+                     user_agent='Youtube Link Parser')
 
 subreddit = reddit.subreddit(creds[4])
 
-thread_id = reddit.submission(id = creds[5])
+thread_id = reddit.submission(id=creds[5])
 
 comments = thread_id.comments
 
 file = open("output.txt", "w")
 
-#looking through comments
+# looking through comments
 for top_level_comment in comments:
     flag = True
     flag2 = True
@@ -47,31 +43,33 @@ for top_level_comment in comments:
     body = top_level_comment.body
     body = body.encode('utf-8')
     if "yout" in body:
-        print(10*'-') #testing
+        print(10 * '-')  # testing
         for line in body.split("\n"):
             if not line:
                 continue
-            if 'yout' in line: #making sure it only parses youtube links
-                #dodgy way to split the links and to get the youtube link  
-                line = line.replace('[','|').replace(']','|').replace('(','|').replace(')','|').replace(' ','|').replace(':', '|', 1)
-                line = line.strip().strip('|') #deleting spaces and | from the start and the end
+            if 'yout' in line:  # making sure it only parses youtube links
+                # dodgy way to split the links and to get the youtube link
+                line = line.replace('[', '|').replace(']', '|').replace('(', '|').replace(')', '|').replace(' ',
+                                                                                                            '|').replace(
+                    ':', '|', 1)
+                line = line.strip().strip('|')  # deleting spaces and | from the start and the end
                 line = line.split("|")
                 # print(line) #testing
-                print(line[-1].strip()) #testing
+                print(line[-1].strip())  # testing
                 songs.append(line[-1])
-                
+
                 file.write("%s\n" % line[-1].strip())
                 continue
             temp = line.strip()
-            temp = temp.replace(':', '|', 1).replace('*','')
+            temp = temp.replace(':', '|', 1).replace('*', '')
             # temp = temp.strip("|")
             temp = temp.strip()
             temp = temp.split('|')
             temp = temp[-1].strip()
             # print(temp) #testing
-            
+
             if flag:
-                titles.append(temp) 
+                titles.append(temp)
                 flag = False
                 continue
             elif flag2:
@@ -84,19 +82,15 @@ for top_level_comment in comments:
         if flag3:
             date += '-'
 
-
-
-
-
-#generating the playlists
+# generating the playlists
 file.write("\n ----------------- \nAuto generated playlists\n")
 
-domain = "https://www.youtube.com/watch_videos?video_ids=" #template link for playlists. Maximum 50 per playlist
+domain = "https://www.youtube.com/watch_videos?video_ids="  # template link for playlists. Maximum 50 per playlist
 count = 0
 songlist = []
 
-for i in songs: 
-    i = i.replace('=', ' ').replace('/', ' ') #replacing '=' and '/' so they can be splitted and the id can be parsed.
+for i in songs:
+    i = i.replace('=', ' ').replace('/', ' ')  # replacing '=' and '/' so they can be splitted and the id can be parsed.
     i = i.strip()
     i = i.split()
     # print(i[-1]) #testing
@@ -104,8 +98,8 @@ for i in songs:
 
 tempdomain = domain
 
-for i in songlist: #appending video_id to the template
-    
+for i in songlist:  # appending video_id to the template
+
     tempdomain += i
     count += 1
 
@@ -118,23 +112,18 @@ for i in songlist: #appending video_id to the template
         tempdomain += ","
 
 if tempdomain[-1] == ",":
-   tempdomain = tempdomain[:-1]     
+    tempdomain = tempdomain[:-1]
 
 file.write("%s\n" % tempdomain.strip())
 
-file.close()            
+file.close()
 
-
-#dirty way to make an csv
+# dirty way to make an csv
 fd = open("file.csv", "w")
 
 fd.write("Title,Artist,Date,Link\n")
 
-
-
-for a,b,c,d in zip(titles, artist, date, songs):
- 
+for a, b, c, d in zip(titles, artist, date, songs):
     fd.write("%s,%s,%s,%s\n" % (a, b, c, d))
 
 fd.close()
-            
