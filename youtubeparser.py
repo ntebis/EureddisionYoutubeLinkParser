@@ -45,9 +45,7 @@ with open("output.txt", "w") as output_file:
                     continue
                 if 'yout' in line:  # making sure it only parses youtube links
                     # dodgy way to split the links and to get the youtube link
-                    line = line.replace('[', '|').replace(']', '|').replace('(', '|').replace(')', '|').replace(' ',
-                                                                                                                '|').replace(
-                        ':', '|', 1)
+                    line = line.replace('[', '|').replace(']', '|').replace('(', '|').replace(')', '|').replace(' ', '|').replace(':', '|', 1)
                     line = line.strip().strip('|')  # deleting spaces and | from the start and the end
                     line = line.split("|")
                     # print(line) #testing
