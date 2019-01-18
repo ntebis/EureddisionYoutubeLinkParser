@@ -1,4 +1,4 @@
-# Eureddision Youtub eLink Parser
+# Eureddision Youtube Link Parser
 A Youtube link parser and Youtube playlist Autogenerator.
 
 This script was made to make easier the collection of all links for the Eureddision Contest on reddit. [More info](https://www.reddit.com/r/Eureddision/wiki/faq)
