@@ -20,30 +20,34 @@ file.close()
 
 songs = []
 
+#standard praw stuff
+
 reddit = praw.Reddit(client_id = creds[0].strip() ,
                      client_secret = creds[1].strip() ,
                      username = creds[2].strip() ,
                      password = creds[3].strip() ,
                      user_agent = 'Youtube Link Parser')
 
-subreddit = reddit.subreddit('greece')
+subreddit = reddit.subreddit(creds[4])
 
-thread_id = reddit.submission(id='agyb3i')
+thread_id = reddit.submission(id = creds[5])
 
 comments = thread_id.comments
 
 file = open("output.txt", "w")
 
+#looking through comments
 for top_level_comment in comments:
-    # print(top_level_comment.body)
+
     body = top_level_comment.body
     for line in body.split("\n"):
         if 'yout' in line: #making sure it only parses youtube links
-            print(10*'-')   
+            print(10*'-') 
+            #dodgy way to split the links and to get the youtube link  
             line = line.replace('*','').replace('[','|').replace(']','|').replace('(','|').replace(')','|').replace(' ','|').replace(':', '|',1)
-            line = line.strip().strip('|')
+            line = line.strip().strip('|') #deleting spaces and | from the start and the end
             line = line.split("|")
-            # print(line)
+            # print(line) #testing
             print(line[-1].strip())
             songs.append(line[-1])
             
@@ -55,12 +59,12 @@ for top_level_comment in comments:
 #generating the playlists
 file.write("\n ----------------- \nAuto generated playlists\n")
 
-domain = "https://www.youtube.com/watch_videos?video_ids="
+domain = "https://www.youtube.com/watch_videos?video_ids=" #template link for playlists. Maximum 50 per playlist
 count = 0
 songlist = []
 
-for i in songs:
-    i = i.replace('=', ' ').replace('/', ' ')
+for i in songs: 
+    i = i.replace('=', ' ').replace('/', ' ') #replacing '=' and '/' so they can be splitted and the id can be parsed.
     i = i.strip()
     i = i.split()
     print(i[-1])
@@ -68,7 +72,7 @@ for i in songs:
 
 tempdomain = domain
 
-for i in songlist:
+for i in songlist: #appending video_id to the template
     
     tempdomain += i
     count += 1
@@ -83,16 +87,8 @@ for i in songlist:
 
 if tempdomain[-1] == ",":
    tempdomain = tempdomain[:-1]     
+   
 file.write("%s\n" % tempdomain.strip())
-
-
-
-    
-
-    
-
-
-
 
 file.close()            
             
