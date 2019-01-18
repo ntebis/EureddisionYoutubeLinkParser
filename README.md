@@ -23,6 +23,8 @@ thread_id
 
 This app may not work properly if you have 2FA activated.
 
+Auto generated playlist, have a maximum limit of 50 songs. This script creates new playlist every 50 songs.
+
 I will also try to create another script that will randomly post all song links with titles and year. It probably required to create a csv file instead the current implementation.
 
 This is my first ever script on python and while I have programming experience, my python experience is close to none. Any tips are welcome.
