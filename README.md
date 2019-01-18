@@ -10,10 +10,15 @@ In order to use this script, you must have the Python suite and have PRAW instal
 A file name credentials.txt must be made and the following in the specific order:
 
 >client_id
+
 >client_secret
+
 >username
+
 >password
+
 >subreddit
+
 >thread_id
 
 This app may not work properly if you have 2FA activated.
