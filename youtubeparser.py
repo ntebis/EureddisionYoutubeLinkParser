@@ -8,11 +8,11 @@ import re
 # Needs a file named credentials.txt with client_id client_secre
 
 
-file = open("credentials.txt", "r")
+cred_file = open("credentials.txt", "r")
 
-creds = file.readlines()
+creds = cred_file.readlines()
 
-file.close()
+cred_file.close()
 
 songs = []
 titles = []
@@ -33,7 +33,7 @@ thread_id = reddit.submission(id=creds[5])
 
 comments = thread_id.comments
 
-file = open("output.txt", "w")
+output_file = open("output.txt", "w")
 
 # looking through comments
 for top_level_comment in comments:
@@ -58,7 +58,7 @@ for top_level_comment in comments:
                 print(line[-1].strip())  # testing
                 songs.append(line[-1])
 
-                file.write("%s\n" % line[-1].strip())
+                output_file.write("%s\n" % line[-1].strip())
                 continue
             temp = line.strip()
             temp = temp.replace(':', '|', 1).replace('*', '')
@@ -83,7 +83,7 @@ for top_level_comment in comments:
             date += '-'
 
 # generating the playlists
-file.write("\n ----------------- \nAuto generated playlists\n")
+output_file.write("\n ----------------- \nAuto generated playlists\n")
 
 domain = "https://www.youtube.com/watch_videos?video_ids="  # template link for playlists. Maximum 50 per playlist
 count = 0
@@ -104,7 +104,7 @@ for i in songlist:  # appending video_id to the template
     count += 1
 
     if count == 50:
-        file.write("%s\n" % tempdomain.strip())
+        output_file.write("%s\n" % tempdomain.strip())
         # print(tempdomain) #testing
         tempdomain = domain
         count = 0
@@ -114,16 +114,16 @@ for i in songlist:  # appending video_id to the template
 if tempdomain[-1] == ",":
     tempdomain = tempdomain[:-1]
 
-file.write("%s\n" % tempdomain.strip())
+output_file.write("%s\n" % tempdomain.strip())
 
-file.close()
+output_file.close()
 
 # dirty way to make an csv
-fd = open("file.csv", "w")
+result_file = open("cred_file.csv", "w")
 
-fd.write("Title,Artist,Date,Link\n")
+result_file.write("Title,Artist,Date,Link\n")
 
 for a, b, c, d in zip(titles, artist, date, songs):
-    fd.write("%s,%s,%s,%s\n" % (a, b, c, d))
+    result_file.write("%s,%s,%s,%s\n" % (a, b, c, d))
 
-fd.close()
+result_file.close()
