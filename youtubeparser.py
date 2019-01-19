@@ -37,7 +37,7 @@ with open("output.txt", "w") as output_file:
         flag2 = True
         flag3 = True
         body = top_level_comment.body
-        body = body.encode('utf-8')
+        body = body   #.encode('utf-8') ## add this if running in python 3
         if "yout" in body:
             print(10 * '-')  # testing
             for line in body.split("\n"):
@@ -96,7 +96,7 @@ with open("output.txt", "w") as output_file:
 
         tempdomain += i
         count += 1
-
+        #naximum limit per playlist is 50
         if count == 50:
             output_file.write("%s\n" % tempdomain.strip())
             # print(tempdomain) #testing
