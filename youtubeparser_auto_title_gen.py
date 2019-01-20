@@ -1,20 +1,17 @@
 import praw
 import re
+import urllib
+import simplejson as json
 
-# This script parses all the links from the eureddision thread and outputs into a txt file.
-# The links than can be used in playlist generators online.
-# Also planning to do a script that will post all submissions randomly.
+# This is a simplier version that auto generates the Titles from the youtube links
 
-# Needs a file named credentials.txt with client_id client_secre
+
 
 
 with open("credentials.txt", "r") as cred_file:
     creds = cred_file.readlines()
 
 songs = []
-titles = []
-artist = []
-date = []
 
 # standard praw stuff
 
@@ -33,11 +30,8 @@ comments = thread_id.comments
 with open("output.txt", "w") as output_file:
     # looking through comments
     for top_level_comment in comments:
-        flag = True
-        flag2 = True
-        flag3 = True
         body = top_level_comment.body
-        body = body   #.encode('utf-8') ## add this if running in python 3
+        body = body  #.encode('utf-8') ## add this if running in python 3
         if "yout" in body:
             print(10 * '-')  # testing
             for line in body.split("\n"):
@@ -54,29 +48,6 @@ with open("output.txt", "w") as output_file:
 
                     output_file.write("%s\n" % line[-1].strip())
                     continue
-                temp = line.strip()
-                temp = temp.replace(':', '|', 1).replace('*', '')
-                # temp = temp.strip("|")
-                temp = temp.strip()
-                temp = temp.split('|')
-                temp = temp[-1].strip()
-                # print(temp) #testing
-
-                if flag: # Gets the title from the comment
-                    titles.append(temp)
-                    flag = False
-                    continue
-                elif flag2: # Gets artist
-                    artist.append(temp)
-                    flag2 = False
-                elif len(temp) <= 5 & len(temp) > 3 & flag3: # Gets the date
-                    if not temp.isdigit():
-                        continue
-                    date.append(temp)
-                    flag3 = False
-
-            if flag3: # Adds an empty field if date not found
-                date.append('-')
 
     # generating the playlists
     output_file.write("\n\n -----------------Auto generated playlists-----------------\n\n")
@@ -112,9 +83,24 @@ with open("output.txt", "w") as output_file:
 
     output_file.write("%s\n\n" % tempdomain.strip())
 
+titles = []
+print('\n\n------------Generating Titles------------\n')
+
+
+for link in songlist:
+    url = 'https://noembed.com/embed?url=https://www.youtube.com/watch?v=' + link # link provided from https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key by rsp
+    json_file = json.load(urllib.request.urlopen(url))
+    titles.append(json_file['title'])
+    print(json_file['title'])
+
+
+
+
+
+
 # dirty way to make an csv
 with open("songs.csv", "w") as result_file:
-    result_file.write("Title,Artist,Date,Link\n")
+    result_file.write("Title,Link\n")
 
-    for a, b, c, d in zip(titles, artist, date, songs):
-        result_file.write("%s,%s,%s,%s\n" % (a, b, c, d))
+    for a, b in zip(titles, songs):
+        result_file.write("%s,%s\n" % (a, b))
