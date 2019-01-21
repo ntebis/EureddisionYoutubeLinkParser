@@ -22,7 +22,7 @@ This app may not work properly if you have 2FA activated.
 
 Auto generated playlist, have a maximum limit of 50 songs. This script creates new playlist every 50 songs.
 
-It now supports not formatted submissions for other subreddits, by autogenerating links 
+It now supports not formatted submissions for other subreddits, by autogenerating titles from the youtube links 
 
 
 I will also try to create another script that will randomly post all song links with titles and year. It probably required to create a csv file instead the current implementation.
