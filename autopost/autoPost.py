@@ -3,11 +3,7 @@ import re
 import pandas
 import time
 
-# This script parses all the links from the eureddision thread and outputs into a txt file.
-# The links than can be used in playlist generators online.
-# Also planning to do a script that will post all submissions randomly.
-
-# Needs a file named credentials.txt with client_id client_secre
+# Gets the info from the csv file and posts them as links
 
 
 with open("credentials2.txt", "r") as cred_file:
@@ -38,7 +34,7 @@ songs = pandas.read_csv('songs.csv')
 
 for index, row in songs.iterrows():
     body = "[%s - %s (%s)](%s)" % (row['Title'], row['Artist'], row['Date'], row['Link'])
-    # print("Adding: %s - %s (%s) - %s" % (row['Title'], row['Artist'], row['Date'], row['Link']))
+    # print("Adding: %s - %s (%s) - %s" % (row['Title'], row['Artist'], row['Date'], row['Link'])) # Testing
     print(body)
     # thread_id.reply(body)
-    time.sleep(0.1)
+    time.sleep(0.1) # must be 5 seconds!
