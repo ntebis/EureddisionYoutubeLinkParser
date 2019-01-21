@@ -50,7 +50,7 @@ with open("output.txt", "w") as output_file:
                     line = line.split("|")
                     # print(line) #testing
                     print(line[-1].strip())  # testing
-                    songs.append(line[-1])
+                    songs.append(line[-1].strip())
 
                     output_file.write("%s\n" % line[-1].strip())
                     continue
