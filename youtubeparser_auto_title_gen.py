@@ -50,7 +50,7 @@ with open("output.txt", "w") as output_file:
                     continue
 
     # generating the playlists
-    output_file.write("\n\n -----------------Auto generated playlists-----------------\n\n")
+    output_file.write("\n\n ----------------- Auto generated playlists -----------------\n\n")
 
     domain = "https://www.youtube.com/watch_videos?video_ids="  # template link for playlists. Maximum 50 per playlist
     count = 0
@@ -84,7 +84,7 @@ with open("output.txt", "w") as output_file:
     output_file.write("%s\n\n" % tempdomain.strip())
 
 titles = []
-print('\n\n------------Generating Titles------------\n')
+print('\n\n------------ Generating Titles ------------\n')
 
 
 for link in songlist:
@@ -92,6 +92,8 @@ for link in songlist:
     json_file = json.load(urllib.request.urlopen(url))
     titles.append(json_file['title'])
     print(json_file['title'])
+    
+print("\n----------- Finished Title Parsing -----------\n\n")    
 
 
 
