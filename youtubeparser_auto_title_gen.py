@@ -27,7 +27,7 @@ thread_id = reddit.submission(id=creds[5])
 
 comments = thread_id.comments
 
-with open("output.txt", "w") as output_file:
+with open("output2.txt", "w") as output_file:
     # looking through comments
     for top_level_comment in comments:
         body = top_level_comment.body
