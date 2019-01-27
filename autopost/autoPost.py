@@ -3,7 +3,10 @@ import re
 import pandas
 import time
 
-# Gets the info from the csv file and posts them as links
+# Gets the info from the csv file and posts them as comments.
+# It can be improved by going through all comments and removing the upvotes.
+# Not sure if it violates any rules.
+# Another Improvement. Newly generated playlists.
 
 
 with open("credentials2.txt", "r") as cred_file:
@@ -30,11 +33,11 @@ thread_id = reddit.submission(id=creds[5])
 
 
 
-songs = pandas.read_csv('songs.csv')
+songs = pandas.read_csv('submissions.csv')
 
 for index, row in songs.iterrows():
     body = "[%s - %s (%s)](%s)" % (row['Title'], row['Artist'], row['Date'], row['Link'])
     # print("Adding: %s - %s (%s) - %s" % (row['Title'], row['Artist'], row['Date'], row['Link'])) # Testing
     print(body)
-    # thread_id.reply(body)
-    time.sleep(0.1) # must be 5 seconds!
+    thread_id.reply(body)
+    time.sleep(5) # must be 5 seconds!
