@@ -14,4 +14,4 @@ subreddit
 thread_id
 ```
 
-This script must be run in Python 3 and the csv must be named *submissions.csv*
+This script must be run in Python 3 with PRAW and Pandas packages installed and the csv must be named *submissions.csv*
